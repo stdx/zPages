@@ -6,10 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="company")
+ * @ORM\Table(name="product_template")
  */
-class Company {
-  
+class ProductTemplate {
   /**
    *
    * @ORM\Id
@@ -34,7 +33,6 @@ class Company {
    * @var string
    */
   protected $description;
-
   public function getId() {
     return $this->id;
   }
@@ -54,4 +52,3 @@ class Company {
     $this->description = $description;
   }
 }
-    

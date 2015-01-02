@@ -8,84 +8,34 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Company\Entity\Company;
 
-class CompanyController extends AbstractRestfulController {
-  
-  /**
-   * 
-   * @var EntityRepository
-   */
-  private $companyRepository;
+class CompanyController extends BaseController {
   
   /**
    *
-   * @var EntityManager
+   * @var EntityRepository
    */
-  private $entityManager;
+  private $repository;
   
   /**
    *
    * @param EntityManager $entityManager          
    */
   public function __construct(EntityManager $entityManager) {
-    $this->entityManager = $entityManager;
+    parent::__construct($entityManager);
   }
+  
   
   /**
    * (non-PHPdoc)
-   *
-   * @see \Zend\Mvc\Controller\AbstractRestfulController::get()
+   * 
+   * @see \Company\Controller\BaseController::fromData()
    */
-  public function get($id) {
-    return new JsonModel($this->entityToJson($this->getRepository()->find($id)));
-  }
-  
-  /**
-   * (non-PHPdoc)
-   * @see \Zend\Mvc\Controller\AbstractRestfulController::delete()
-   */
-  public function delete($id) {
-    $r = $this->getRepository();
-    $company = $r->find($id);
-  }
-  
-  /**
-   * (non-PHPdoc)
-   *
-   * @see \Zend\Mvc\Controller\AbstractRestfulController::getList()
-   */
-  public function getList() {
-    $companies = $this->getRepository()->findAll();
-    return new JsonModel($this->toJson($companies));
-  }
-  
-  /**
-   * (non-PHPdoc)
-   * @see \Zend\Mvc\Controller\AbstractRestfulController::create()
-   */
-  public function create($data) {
+  protected function fromData($data) {
+    $company = new Company();
+    $company->setName($data ['name']);
+    $company->setDescription($data ['description']);
     
-  }
-  
-  
-  /**
-   *
-   * @param unknown $companies          
-   * @return multitype:|multitype:number string
-   */
-  private function toJson($companies) {
-    if (! $companies) {
-      return array ();
-    }
-    
-    if (is_array($companies)) {
-      $result = array ();
-      foreach ( $companies as $c ) {
-        array_push($result, $this->entityToJson($c));
-      }
-      return $result;
-    } else {
-      return $this->entityToJson($companies);
-    }
+    return $company;
   }
   
   /**
@@ -93,7 +43,7 @@ class CompanyController extends AbstractRestfulController {
    * @param Company $company          
    * @return multitype:number string
    */
-  private function entityToJson(Company $company) {
+  public function entityToJson($company) {
     $dto = array (
         'id' => $company->getId(),
         'name' => $company->getName() 
@@ -106,16 +56,14 @@ class CompanyController extends AbstractRestfulController {
     return $dto;
   }
   
-
-  
   /**
    *
    * @return EntityRepository
    */
-  private function getRepository() {
-    if (! $this->companyRepository) {
-      $this->companyRepository = $this->entityManager->getRepository('\Company\Entity\Company');
+  protected function getRepository() {
+    if (! $this->repository) {
+      $this->repository = $this->getEntityManager()->getRepository('\Company\Entity\Company');
     }
-    return $this->companyRepository;
+    return $this->repository;
   }
 }

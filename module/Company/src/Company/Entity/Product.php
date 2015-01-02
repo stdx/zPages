@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="product")
  */
 class Product {
+  
   /**
    *
    * @ORM\Id
@@ -20,50 +21,65 @@ class Product {
   protected $id;
   
   /**
-   * @ORM\Column(type="string" ,length=255)
+   * @ORM\ManyToOne(targetEntity="ProductTemplate")
+   * @ORM\JoinColumn(name="product_template_id", referencedColumnName="id")
    *
-   * @var string
+   * @var ProductTemplate
    */
-  protected $name;
-  
+  protected $template;
   
   /**
-   * @ORM\ManyToOne(targetEntity="Company", inversedBy="products", cascade={"persist"})
-   * @ORM\JoinColumn(name="company_id", referencedColumnName="id", unique=false, nullable=false)
+   * @ORM\ManyToOne(targetEntity="Company")
+   * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+   *
+   * @var Company
    */
   protected $company;
   
   /**
    *
-   * @@ORM\Mapping\Column(type="text")
-   *
-   * @var string
+   * @return number
    */
-  protected $description;
-  
   public function getId() {
     return $this->id;
   }
+  
+  /**
+   *
+   * @param integer $id          
+   */
   public function setId($id) {
     $this->id = $id;
   }
-  public function setName($name) {
-    $this->name = $name;
-  }
-  public function getName() {
-    return $this->name;
-  }
-  public function getDescription() {
-    return $this->description;
-  }
-  public function setDescription($description) {
-    $this->description = $description;
-  }
+  
+  /**
+   *
+   * @return Company
+   */
   public function getCompany() {
     return $this->company;
   }
+  
+  /**
+   *
+   * @param Company $company          
+   */
   public function setCompany($company) {
     $this->company = $company;
   }
   
+  /**
+   *
+   * @param ProductTemplate $template          
+   */
+  public function setTemplate($template) {
+    $this->template = $template;
+  }
+  
+  /**
+   * return ProductTemplate
+   */
+  public function getTemplate() {
+    return $this->template;
+  }
 }
