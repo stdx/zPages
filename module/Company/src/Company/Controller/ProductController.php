@@ -91,6 +91,7 @@ class ProductController extends AbstractRestfulController {
       return new JsonModel($this->productConverter->entityToJson($result));
     }
   }
+
   
   /**
    * (non-PHPdoc)

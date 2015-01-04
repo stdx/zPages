@@ -14,8 +14,8 @@ class ProductConverter extends BaseConverter {
   public function entityToJson($entity) {
     $dto = array (
         'id' => $entity->getId(),
-        'company_id' => $entity->getCompany()->getId(),
-        'template_id' => $entity->getTemplate()->getId()
+        'companyId' => $entity->getCompany()->getId(),
+        'templateId' => $entity->getTemplate()->getId()
     );
     return $dto;
   }
